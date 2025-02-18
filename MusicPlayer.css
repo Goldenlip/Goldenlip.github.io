@@ -1,0 +1,591 @@
+/* codewithharsh_ */
+/* Import Google Font - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+*{
+ margin:0;
+ padding:0;
+ box-sizing:border-box;
+}
+
+body{
+ background:#181b23;
+ font-family: "Poppins", sans-serif;
+}
+
+.container{
+ height:640px;
+ width:340px;
+ background:#d9d9d9;
+ position:absolute;
+ top:50%;
+ left:50%;
+ transform:translate(-50%, -50%);
+ border-radius:20px;
+ overflow:hidden;
+}
+
+.container .now-playing{
+ padding:1px;
+ width:100px;
+ margin:auto;
+ font-size:11px;
+ text-align:center;
+ margin-top:25px;
+ font-weight:500;
+ color:#31456a;
+}
+
+.container .now-playing i{
+ font-size:19px;
+}
+
+.container .music-img{
+ height:0px;
+ width:0px;
+ margin:auto;
+ margin-top: 0px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ border-radius:25px;
+}
+
+.container .music-img img{
+ height:0px;
+ width:0px;
+ border-radius:25px;
+ box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset,
+             rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+             rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+}
+
+.container .music-name{
+ text-align:center;
+ font-size:17px;
+ margin-top:10px;
+ font-weight:600;
+ color:#31456a;
+}
+
+.container .artist-name{
+ text-align:center;
+ font-size:13px;
+ color:#31456a;
+}
+
+.container .wave-box{
+ height:300px;
+ width: 340px;
+ 
+ display:flex;
+ align-items:center;
+ margin-top: 30px;
+}
+
+.container .wave-box #waveform{
+ /* margin:auto; */
+ height:300px;
+ width: 340px;
+ position: absolute;
+ bottom: 200px;
+ /* display:flex; */
+ align-items:center;
+ cursor:pointer;
+ background: #000000;
+ scrollbar-color: gray white;
+ scrollbar-width: 10px;
+ margin-bottom: 70px;
+}
+
+.container .wave-box .time{
+ font-size:12px;
+ color:#31456a;
+}
+
+.container .wave-box .current-time{
+ position:relative;
+ left:15px;
+}
+
+.container .wave-box .total-time{
+ position:relative;
+ left:-15px;
+}
+
+.container .btns{
+ height:70px;
+ width:100%;
+ padding:20px;
+ margin-top:13px;
+ display:flex;
+ align-items:center;
+}
+
+.container .btns .play-pause{
+ height:45px;
+ width:45px;
+ background:black;
+ border-radius:100%;
+ color:#fff;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ position:absolute;
+ left:50%;
+ transform:translate(-130px, -20px);
+ margin-top:10px;
+ cursor:pointer;
+}
+
+.container .btns #repeat-song-icon {
+height:45px;
+ width:45px;
+ background:black;
+ border-radius:100%;
+ color:#fff;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ position:absolute;
+ left:50%;
+ transform:translate(35px, -20px);
+ margin-top:10px;
+ cursor:pointer;
+}
+.container .btns .fa-backward-step{
+  height:45px;
+  width:45px;
+  background:black;
+  border-radius:100%;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:absolute;
+  left:50%;
+  transform:translate(-75px, -20px);
+  margin-top:10px;
+  cursor:pointer;
+}
+
+.container .btns #music-list-btn {
+ height:45px;
+ width:45px;
+ background:black;
+ border-radius:100%;
+ color:#fff;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ position:absolute;
+ left:50%;
+ transform:translate(-20px, -20px);
+ margin-top:70px;
+
+ cursor:pointer;
+}
+
+.container #save-btn {
+  height:45px;
+  width:45px;
+  background:black;
+  border-radius:100%;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:absolute;
+  left:50%;
+  transform:translate(-20px, -20px);
+  margin-top:70px;
+ 
+  cursor:pointer;
+}
+
+.container .btns .fa-forward-step{
+height:45px;
+ width:45px;
+ background:black;
+ border-radius:100%;
+ color:#fff;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ position:absolute;
+ left:50%;
+ transform:translate(-20px, -20px);
+ margin-top:10px;
+ cursor:pointer;
+}
+.container .btns #region-icon{
+  height:45px;
+   width:45px;
+   border-radius:100%;
+
+   display:flex;
+   align-items:center;
+   justify-content:center;
+   position:absolute;
+   left:50%;
+   transform:translate(90px, -20px);
+   margin-top:10px;
+   cursor:pointer;
+  }
+.container .btns .step-icon{
+ font-size:22px;
+}
+
+/* .container .volume-box{
+ height:60px;
+ width:100%;
+ padding:20px;
+ margin:auto;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ margin-top:4px;
+} */
+
+.container .volume-box .volume-icon{
+ font-size:22px;
+ color:#31456a;
+ position:relative;
+ left:-11px;
+ user-select:none;
+}
+
+.container .volume-box .volume-btn{
+ all:unset;
+ height:22px;
+ width:22px;
+ border-radius:100%;
+ background:#fff;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ cursor:pointer;
+ box-shadow:rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.container .volume-box .volume-btn i{
+ font-size:11px;
+}
+
+.container .volume-box .volume-incre{
+ margin-left:8px;
+}
+
+/* .container .volume-box input{
+ -webkit-appearance:none;
+ height:3px;
+ width:130px;
+ background:lightgrey;
+ margin-left:8px;
+ cursor:pointer;
+ background-image:-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #5467ff), color-stop(100%, #5467ff));
+ background-size:50% 100%;
+ background-repeat:no-repeat;
+}
+
+.container .volume-box input::-webkit-slider-thumb{
+ -webkit-appearance:none;
+ height:13px;
+ width:13px;
+ background:#5467ff;
+ border-radius:100%;
+ cursor:pointer;
+} */
+
+.guesheh-title {
+  display: flex;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: -8px;
+}
+
+.guesheh-info {
+  display: flex;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.ginfo-element {
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.artist-info {
+  display: flex;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: 6px;
+}
+
+.artist-element {
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+#music_list {
+   margin: -10px;
+   margin-left: 50px;
+   text-align: center; 
+}
+.container .music-list-div{
+ height:330px;
+ width:100%;
+ background:#f5f8ff;
+ backdrop-filter:blur(22px);
+ position:absolute;
+ bottom:-100%;
+ border-top-left-radius:20px;
+ border-top-right-radius:20px;
+ transition:all .2s;
+ z-index:2;
+ box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.btns .bottom-btns{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  width:100%;
+}
+
+.container .music-list-div #music-list-close-btn{
+ color:#808080;
+ position:absolute;
+ right:0;
+ font-size:18px;
+ margin-top:8px;
+ margin-right:20px;
+ color:#31456a;
+ cursor:pointer;
+}
+
+.container .music-list-div .music-list-title{
+ color:#808080;
+ position:absolute;
+ left:-3px;
+ font-size:14px;
+ margin-top:10px;
+ margin-left:20px;
+ white-space:nowrap;
+ color:#31456a;
+}
+
+.container .music-list-div .music-list-title i{
+ position:relative;
+ top:5px;
+ font-size:20px;
+}
+
+.music-lists-container{
+ height:260px;
+ width:100%;
+ position:relative;
+ top:40px;
+ overflow-y:scroll;
+}
+
+.music-lists-container ul li{
+ cursor:pointer;
+}
+
+.music-lists-container::-webkit-scrollbar{
+ display:none;
+}
+
+.music-list{
+ height:53px;
+ width:88%;
+ border-bottom:1px solid #808080;
+ position:relative;
+ top:8px;
+ margin:auto;
+ margin-top:13px;
+}
+
+.music-list img{
+ height:40px;
+ width:40px;
+ border-radius:10px;
+ position:absolute;
+ margin-top:3px;
+ margin-left:8px;
+}
+
+.music-list .musiclist-song-title{
+ position:relative;
+ left:58px;
+ font-size:12.5px;
+ color:#fff;
+ white-space:nowrap;
+ color:#31456a;
+ user-select:none;
+}
+
+.music-list .musiclist-artistname{
+ position:absolute;
+ top:26px;
+ left:58px;
+ font-size:10px;
+ color:#808080;
+ white-space:nowrap;
+ user-select:none;
+}
+
+.music-list .music-list-total-time{
+ position:absolute;
+ top:50%;
+ right:0;
+ transform:translate(-50%, -50%);
+ font-size:12px;
+ color:#808080;
+ user-select:none;
+}
+
+.music-lists-container ul li.playing .music-list-total-time{
+ right:-10px;
+}
+
+
+
+/* EFFECTS LIST */
+/* Dropdown Button */
+
+.effects-btn {
+  background-color: #d9d9d9;
+   color: black;
+   padding: 16px;
+   font-size: 16px;
+   border: none;
+   cursor: pointer;
+   margin-left: 20px;
+ }
+ 
+ /* Dropdown button on hover & focus
+ .effects-btn:hover, .dropbtn:focus {
+   background-color: gray;
+ } */
+ 
+ /* The container <div> - needed to position the dropdown content */
+ .effects-list {
+   position: relative;
+   display: block;
+ }
+ #effects-list-btn {
+  height:55px;
+  width:90px;
+  border-radius:30%;
+  color:black;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transform:translate(110px, 10px);
+
+  cursor:pointer;
+ }
+ 
+ /* Dropdown Content (Hidden by Default) */
+ .effects {
+   display: none;
+   position: absolute;
+   background-color: #d9d9d9;
+   min-width: 340px;
+   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+   z-index: 3;
+
+ }
+
+ 
+ /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+ .show {display:block;}
+
+.effects-slider {
+  -webkit-appearance: none;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+.effects-slider:focus {
+  outline: none;
+}
+.effects-slider::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 12.8px;
+  cursor: pointer;
+  box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+  background: gray;
+  border-radius: 25px;
+  
+  border: 0px solid #000101;
+}
+.effects-slider::-webkit-slider-thumb {
+  box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+  border: 0px solid #000000;
+  height: 20px;
+  width: 36px;
+  border-radius: 10px;
+  background: black;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -3.6px;
+}
+
+/*
+Regions Dropdown List
+*/
+#region-icon {
+  cursor: pointer;
+  padding: 10px;
+  border: none;
+  font-size: 24px;
+  background:black;
+  color:white;
+}
+
+#region-icon.active {
+  color: black;
+  background-color: white;
+
+}
+
+.regions-dropdown {
+  display: none;
+  position: absolute;
+  top: 301px; /* Adjust to fit below the button */
+  left: 0;
+  width: 100%;
+  background-color: #d9d9d9;
+  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+  padding: 15px;
+  border-radius: 5px;
+  box-sizing: border-box;
+  z-index: 4;
+}
+
+.regions-dropdown.show {
+  display: block;
+}
+
+#cancel:hover {
+  color: white;
+  background-color: black;
+  border-radius: 100%;
+  border-width: 0px;
+}
+
+.delete-btn {
+
+   font-size: 16px;
+   border: none;
+   cursor: pointer;
+   margin-left: 20px;
+ }

@@ -1,0 +1,154 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font awesome 6 cdn link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <!-- Material Icons Cdn -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="MusicPlayer.css">
+    <title>Radif Player</title>
+</head>
+<body>
+    
+ <div class="container">
+    <h1 id="demo"></h1>
+    <audio src="" id="music"></audio>
+    <div class="effects-list">
+        
+        <button onclick="myFunction()" class="effects-btn" id="effects-list-btn">
+            <b>Effects </b><i id="caret" class="material-icons">expand_more</i></button>
+        <div id="effects-Dropdown" class="effects">
+            <div class="volume-box">
+                <!-- <i class="material-icons volume-icon">volume_up</i> -->
+                <!-- <button class="volume-decre volume-btn">
+                    <i class="material-icons">remove</i>
+                </button> -->
+                <input id="volume_input" type="range" class="effects-slider" min="0" max="1" step="0.1" value="1.00">
+                <!-- <button class="volume-incre volume-btn">
+                    <i class="material-icons">add</i>
+                </button> -->
+            </div>
+            <label for="volume_input" style="margin-left: 35px;"><b>Volume: </label><output id="volume_value"></output> dB</b>
+            
+            
+            <input id="speed_input" type="range" class="effects-slider" min="0.25" max="3" step="0.25" value="1.00">
+            <label for="speed_input" style="margin-left: 35px;"><b>Speed: </label><output id="speed_value"></output>x</b>
+
+            <input id="pitch_input" type="range" class="effects-slider" min="0.65" max="1.35" step="0.05" value="1.00">
+            <label for="pitch_input" style="margin-left: 35px;"><b>Pitch: </label><output id="pitch_value"></output> semitones</b>
+            
+            <input id="tune_input" type="range" class="effects-slider" min="-50" max="50" step="1" value="0.00">
+            <label for="tune_input" style="margin-left: 35px;"><b>Tune: </label><output id="tune_value"></output> cent</b>
+
+            <input id="pan_input" type="range" class="effects-slider" min="-30" max="30" step="1" value="0 L/R">
+            <label for="pan_input" style="margin-left: 35px;"><b>Panning: </label><output id="pan_value"></output></b>
+        </div>
+    </div>
+
+    <div class="music-img">
+        <img src="Images/image1.jpg" alt="">
+    </div>
+    <div class="wave-box" id="canvas">
+        <!-- <span class="current-time time">0:00</span> -->
+    <div id="waveform"></div>
+        <!-- <span class="total-time time">3:45</span> -->
+    </div>
+    <div class="regions-dropdown" id="regions-dropdown">
+        <div class="controls">
+            <div>
+            <span>
+                <input id="loop" style="margin-left: 2em" type="checkbox" checked="${loop}" />
+                <label for="loop"><b>Loop regions</b></label>
+            </span>
+            <button class="delete-btn">
+                <i id="region-clicked" class="material-icons">data_array</i>
+                <i id="highlighted" class="material-icons">arrow_forward</i>
+                <button id="delete-btn" class="material-icons" disabled>delete</button>
+            </button>
+            </div>
+            <div>
+                <label style="margin-left: 2em">
+                    <b>Zoom: <input id="zooming" type="range" min="1" step="0.1" max="100" value="20" /></b>
+                  </label>
+            </div>           
+        </div>
+
+    </div>
+    <div class="btns">
+        <i class="material-icons" id="repeat-song-icon">repeat</i>
+        <i class="fa-solid fa-backward-step step-icon"></i>
+        <div class="play-pause play">
+            <i class="material-icons">play_arrow</i>
+        </div>
+        <i class="fa-solid fa-forward-step step-icon"></i>
+        <i class="material-icons" id="region-icon">data_array</i>
+    </div>
+    
+    <div class="now-playing btns" id="music_list">
+        <i class="material-icons" id="music-list-btn">queue_music</i>
+    </div>
+
+    
+    <div class="now-playing btns" id="save">
+        <i class="material-icons" id="save-btn">save</i>
+    </div>
+
+    <div class="music-info">
+        <div class="guesheh-title">
+            
+        </div>
+        <h5 class="music-name"></h5>
+        <!-- <h5 class="artist-name"></h5> -->
+        <!-- <div class="guesheh-info">
+            <p class="ginfo-element">Primary</p>
+            <p class="ginfo-element">(Key)</p>
+        </div> -->
+        <div class="artist-info">
+            <!-- <p class="artist-name music-name"></p> -->
+            <!-- <p class="artist-element">(Instrument)</p> -->
+        </div>
+    </div>
+    
+    <div class="bottom-btns">
+        <!-- <div class="now-playing btns" id="music_list">
+            <i class="material-icons" id="music-list-btn">queue_music</i>
+        </div> -->
+        <!-- <div class="now-playing btns" id="save">
+            <i class="material-icons" id="save-btn">save</i>
+        </div> -->
+    </div>
+
+    <div class="music-list-div">
+        <i class="material-icons" id="music-list-close-btn">close</i>
+        <span class="music-list-title"><i class="material-icons">queue_music</i> Radif Library</span>
+        <div class="music-lists-container">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+ </div>
+
+<!-- WaveSurfer Api -->
+<script src="https://unpkg.com/wavesurfer.js@7"></script>
+<script src="https://unpkg.com/wavesurfer.js@7/dist/plugins/regions.min.js"></script>
+<script src="https://unpkg.com/wavesurfer.js@7/dist/plugins/hover.min.js"></script>
+<script src="https://unpkg.com/wavesurfer.js@7/dist/plugins/zoom.min.js"></script> 
+<script src="https://unpkg.com/wavesurfer.js@7/dist/plugins/timeline.min.js"></script>
+
+<!-- Data file -->
+<script src="Data.js"></script>
+<!-- Script file -->
+<script src="MusicPlayer.js"></script>
+<script src="javascript_files/effects.js"></script>
+<script src="javascript_files/browser.js"></script>
+
+
+</body>
+</html>
