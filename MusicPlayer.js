@@ -1,3 +1,5 @@
+
+// =================== EXISTING VARIABLES ===================
 let effectsListBox = document.querySelector(".container .effects-list-div");
 let effectsListOpenBtn = document.querySelector(".container .btns #effects-list-btn");
 let effectsListCloseBtn = document.querySelector(".container .effects-list-div #effects-list-close-btn");
@@ -24,24 +26,27 @@ let musicIndex = 1;
 window.addEventListener("load", ()=>{
     loadMusic(musicIndex);
     playingNow();
-    
-})
+});
 
 // Load music data based on music index
-let loadMusic =(indexNumb)=>{
-    // Set music image, source, name and artist
-    musicImg.src = `${allmusic[indexNumb - 1].img}.jpg`;
-    music.src = `${allmusic[indexNumb - 1].src}.mp3`;
-    // musicName.innerHTML = `${allmusic[indexNumb - 1].name}`;
-    // artistName.innerHTML = `${allmusic[indexNumb - 1].artist}`;
-    musicName.innerHTML = `${allmusic[indexNumb - 1].name} - ${allmusic[indexNumb - 1].artist}`;
+function loadMusic(indexNumb){
+    // "indexNumb" is 1-based, but arrays are 0-based
+    const track = allmusic[indexNumb - 1];
+    // Set the <audio> src
+    music.src = track.src;
+    // If you have images, e.g. track.img => "Musics_modif/Karimi/Dashti/iri" etc.
+    // Adjust as needed or remove if you don't have images for each track
+    musicImg.src = `${track.img || "Images/default"}.jpg`;
+
+    // Update the displayed text
+    musicName.innerHTML = `${track.name} - ${track.artist}`;
 }
 
 /*
- ********************* WAVEFORM IMPLEMENTATION************************
+ ********************* WAVEFORM IMPLEMENTATION ************************
 */
 
-// Create a timeline plugin instance with custom options
+// Timeline plugin instance
 const timeline = WaveSurfer.Timeline.create({
     height: 20,
     insertPosition: 'beforebegin',
@@ -52,30 +57,29 @@ const timeline = WaveSurfer.Timeline.create({
       fontSize: '7px',
       color: '#FFFFFF',
     },
-  })
+});
 
-const ctx = document.createElement('canvas').getContext('2d')
-const gradient = ctx.createLinearGradient(0, 20, 0, 520)
-gradient.addColorStop(0, 'rgba(255, 255, 255, 0.1)')
-gradient.addColorStop(0.5, 'rgb(255, 255, 255)')
-gradient.addColorStop(1, 'rgba(255, 255, 255, 0.1)')
+const ctx = document.createElement('canvas').getContext('2d');
+const gradient = ctx.createLinearGradient(0, 20, 0, 520);
+gradient.addColorStop(0, 'rgba(255, 255, 255, 0.1)');
+gradient.addColorStop(0.5, 'rgb(255, 255, 255)');
+gradient.addColorStop(1, 'rgba(255, 255, 255, 0.1)');
 
-const gradientprog = ctx.createLinearGradient(0, 20, 0, 520)
-gradientprog.addColorStop(0, 'rgba(73, 221, 247, 0.1)')
-gradientprog.addColorStop(0.5, 'rgb(73, 221, 247)')
-gradientprog.addColorStop(1, 'rgba(73, 221, 247, 0.1)')
+const gradientprog = ctx.createLinearGradient(0, 20, 0, 520);
+gradientprog.addColorStop(0, 'rgba(73, 221, 247, 0.1)');
+gradientprog.addColorStop(0.5, 'rgb(73, 221, 247)');
+gradientprog.addColorStop(1, 'rgba(73, 221, 247, 0.1)');
 
-// Create audio wave using wavesurfer API
+// Create audio wave using WaveSurfer
 const wavesurfer = WaveSurfer.create({
     backend: 'WebAudio',
-    container: '#waveform', //Waveform container
+    container: '#waveform',
     waveColor: gradient,
     progressColor: gradientprog,
     height: 300,
     barWidth: NaN,
     barRadius: NaN,
-    audioRate: 1, // set the initial playback rate
-    // normalize: true,
+    audioRate: 1,
     hideScrollbar: false,
     responsive: true,
     minPxPerSec: 20,
@@ -88,10 +92,11 @@ const wavesurfer = WaveSurfer.create({
             labelBackground: '#555',
             labelColor: '#fff',
             labelSize: '11px',
-          }),
-            timeline,
-      ],
-})
+        }),
+        timeline,
+    ],
+});
+
 
 // Give regions a random color when they are created
 const random = (min, max) => Math.random() * (max - min) + min
@@ -165,31 +170,28 @@ wavesurfer.once('decode', () => {
     }
   })
 
-//  Load initial music file
-wavesurfer.load(`Musics/music${musicIndex}.mp3`);
+// Load the first track into wavesurfer
+wavesurfer.load(allmusic[musicIndex - 1].src);
 
-// Play/Pause music on click
-playPauseBtn.addEventListener("click", ()=>{
-    wavesurfer.playPause(); //Toggle play/pause
-    // Update play/pause icon
-    if(playPauseBtn.classList.contains("play")){
+// Example: play/pause
+playPauseBtn.addEventListener("click", ()=> {
+    wavesurfer.playPause();
+    if (playPauseBtn.classList.contains("play")){
         playPauseBtn.classList.replace("play", "pause");
         playPauseBtn.innerHTML = '<i class="material-icons">pause</i>';
-    }else{
+    } else {
         playPauseBtn.classList.replace("pause", "play");
         playPauseBtn.innerHTML = '<i class="material-icons">play_arrow</i>';
     }
     playingNow();
-})
-
-
+});
 
 // Calculate time in minutes and seconds
 let calculateTime = function(value){
     let second = Math.floor(value % 60);
     let minute = Math.floor(value / 60);
 
-    if(second < 10){
+    if (second < 10) {
         second = "0" + second;
     }
     return `${minute}:${second}`;
@@ -197,7 +199,6 @@ let calculateTime = function(value){
 
 // Update total time on wavesurfer ready
 wavesurfer.on("ready", async ()=>{
-    // totalTime.innerHTML = calculateTime(wavesurfer.getDuration());
   const webAudioPlayer = wavesurfer.getMediaElement()
   const gainNode = webAudioPlayer.getGainNode()
   const audioContext = gainNode.context
@@ -205,46 +206,55 @@ wavesurfer.on("ready", async ()=>{
   await audioContext.audioWorklet.addModule('phase-vocoder.min.js')
   const phaseVocoderNode = new AudioWorkletNode(audioContext, 'phase-vocoder-processor')
 
+  const myAudio = document.querySelector("audio");
+  const panControl = document.querySelector("#pan_input");
+  const panValue = document.querySelector("#pan_value");
+
+  const source = audioContext.createMediaElementSource(myAudio);
+
+  // Create a stereo panner
+  const panNode = audioContext.createStereoPanner();
+
+  panControl.oninput = () => {
+    panNode.pan.setValueAtTime(panControl.value, audioContext.currentTime);
+    panValue.textContent = panControl.value;
+  };
+
   // Connect the worklet to the wavesurfer audio
   gainNode.disconnect()
   gainNode.connect(phaseVocoderNode)
-  phaseVocoderNode.connect(audioContext.destination)
+  phaseVocoderNode.connect(panNode)
+  panNode.connect(audioContext.destination);
 
-  // // Speed slider
-
-  // document.getElementById('speed_input').addEventListener('input', (e) => {
-  //   const speed = e.target.valueAsNumber
-  //   // document.querySelector('#rate').textContent = speed.toFixed(2)
-  //   wavesurfer.setPlaybackRate(speed)
-  // })
-
-  // document.getElementById('pitch_input').addEventListener('input', (t) => {
-  //   const pitch = t.target.valueAsNumber
-  //   const pitchFactorParam = phaseVocoderNode.parameters.get('pitchFactor')
-  //   pitchFactorParam.value = pitch * 1 / speed
-  // })
   let speed = 1.0;  // Default speed
-let pitch = 1.0;  // Default pitch
+  let pitch = 1.0;  // Default pitch
+  let tune = 0.0; 
 
-// Speed slider
-document.getElementById('speed_input').addEventListener('input', (e) => {
-    speed = e.target.valueAsNumber;
-    wavesurfer.setPlaybackRate(speed);
+
+  // Speed slider
+  document.getElementById('speed_input').addEventListener('input', (e) => {
+      speed = e.target.valueAsNumber;
+      wavesurfer.setPlaybackRate(speed);
+      updatePitch();
+  });
+
+  // Pitch slider
+  document.getElementById('pitch_input').addEventListener('input', (t) => {
+      pitch = t.target.valueAsNumber;
+      updatePitch();
+  });
+
+  // Tune slider
+  document.getElementById('tune_input').addEventListener('input', (t) => {
+    tune = t.target.valueAsNumber;
     updatePitch();
-});
+  });
 
-// Pitch slider
-document.getElementById('pitch_input').addEventListener('input', (t) => {
-    pitch = t.target.valueAsNumber;
-    updatePitch();
-});
-
-// Function to update pitch considering speed
-function updatePitch() {
-    const pitchFactorParam = phaseVocoderNode.parameters.get('pitchFactor');
-    pitchFactorParam.value = pitch / speed;
-}
-
+  // Function to update pitch considering speed
+  function updatePitch() {
+      const pitchFactorParam = phaseVocoderNode.parameters.get('pitchFactor');
+      pitchFactorParam.value = (pitch+5*1e-4*tune) / speed;
+  }
 })
 
 // Next music button event listener
@@ -297,14 +307,6 @@ prevMusicBtn.addEventListener("click", ()=>{
 
 // Define functions to open and close music list
 // Opens the music list by setting its bottom position to 0(zero)
-let musicListOpen =()=>{
-    musicListBox.style.bottom = "0";
-}
-
-// Closes the music list by setting its bottom position to -100%
-let musicListClose =()=>{
-    musicListBox.style.bottom = "-100%";
-}
 
 // Progress Bar Slider Runnable track
 let updateSliderTrack =()=>{
@@ -319,12 +321,6 @@ let updateSliderTrack =()=>{
 let setMusicVolume =() =>{
     // Set wavesurfer volume to current volume input value
     wavesurfer.setVolume(volumeProgressBar.value); 
-    // Update volume icon based on volume value
-    // if(volumeProgressBar.value == 0){
-    //     volumeIcon.innerHTML = 'volume_off';
-    // }else{
-    //     volumeIcon.innerHTML = 'volume_up';
-    // }
 }
 
 // Increase volume
@@ -332,23 +328,13 @@ let volumeIncrease =()=>{
     // stepUp(): is a javascript inbuild function it increment input value by specified step
     volumeProgressBar.stepUp(); //Increment volume value
     wavesurfer.setVolume(volumeProgressBar.value); //Update wavesurfer volume
-    // if(volumeProgressBar.value !== 0){
-    //     volumeIcon.innerHTML = 'volume_up';
-    // }
     updateSliderTrack();
 }
 
 // Decrease volume
 let volumeDecrease =()=>{
-    // stepDown(): is a javascript inbuild function it decrement input value by specified step
     volumeProgressBar.stepDown(); // Decrement volume value
     wavesurfer.setVolume(volumeProgressBar.value); //Update wavesurfer volume
-    // // Update volume icon based on volume value
-    // if(volumeProgressBar.value == 0){
-    //     volumeIcon.innerHTML = 'volume_off';
-    // }else{
-    //     volumeIcon.innerHTML = 'volume_up';
-    // }
     updateSliderTrack();
 }
 
@@ -383,48 +369,34 @@ repeatSongIcon.addEventListener("click", ()=>{
     }
 })
 
-
-/*
-*********************** FOR TRAVERSING RADIFS ************************
-*/
-
-// After song ends
 wavesurfer.on("finish", ()=>{
-    // Get current mode (repeat, repeat_one, or shuffle)
     let getText = repeatSongIcon.innerHTML;
-    // Handle song ending based on mode
     switch(getText){
-        // Repeat playlist
         case "repeat":
-          nextMusicBtn.click(); //Play next song
+            nextMusicBtn.click();
         break;
-        // Repeat current song
         case "repeat_one":
-          wavesurfer.setTime(0); // Reset song position to 0(zero)
-          loadMusic(musicIndex); // Reload current song
-          setTimeout(()=>{
-            wavesurfer.play();
-          }, 300);
+            wavesurfer.setTime(0);
+            loadMusic(musicIndex);
+            setTimeout(()=> wavesurfer.play(), 300);
         break;
-        // Shuffle playlist
         case "shuffle":
-            // Generate random song index
             let ranIndex = Math.floor((Math.random() * allmusic.length) + 1);
-            do{
-                // Ensure new song is different from current song
+            do {
                 ranIndex = Math.floor((Math.random() * allmusic.length) + 1);
-            }while(musicIndex == ranIndex);
-            musicIndex = ranIndex; // Update music index
-            loadMusic(musicIndex); // Load new song
-            wavesurfer.load(`Musics/music${musicIndex}.mp3`); //Load new song file 
-            wavesurfer.setTime(0); // Reset song position to 0(zero)
-            // Update play/pause icon if currently paused
+            } 
+            while(musicIndex == ranIndex);
+
+            musicIndex = ranIndex;
+            loadMusic(musicIndex);
+            wavesurfer.load(allmusic[musicIndex - 1].src);
+            wavesurfer.setTime(0);
+
             if(playPauseBtn.classList.contains("pause")){
                 playPauseBtn.classList.replace("pause", "play");
                 playPauseBtn.innerHTML = '<i class="material-icons">play_arrow</i>';
             }
-            // Play new music after 2-second delay
-            setTimeout(() =>{
+            setTimeout(()=>{
                 if(playPauseBtn.classList.contains("play")){
                     playPauseBtn.classList.replace("play", "pause");
                     playPauseBtn.innerHTML = '<i class="material-icons">pause</i>';
@@ -434,92 +406,204 @@ wavesurfer.on("finish", ()=>{
             playingNow();
         break;
     }
-})
+    wavesurfer.stop();
+    // 2) Seek to 0 if you want the playhead to go back
+    wavesurfer.seekTo(0);
+});
 
-// Now we create music playlist functionality
-// Music list box which store music items dynamically
-const ul = document.querySelector(".music-lists-container ul");
+// ========== BOTTOM SHEET LOGIC (Radif -> Dastgah -> Songs) ==========
 
-for(let i = 0; i < allmusic.length; i++){
-    // Create list item HTML
-    let li = `
-                <li li-index="${i + 1}">
-                    <div class="music-list">
-                        <img src="${allmusic[i].img}.jpg" alt="">
-                        <span class="musiclist-song-title">${allmusic[i].name}</span>
-                        <span class="musiclist-artistname">${allmusic[i].artist}</span>
-                        <audio class="music${i + 1}" src="${allmusic[i].src}.mp3"></audio>
-                        <span class="music-list-total-time" id="music${i + 1}">3:45</span>
-                    </div>
-                </li>`;
-    // Insert list item HTML into ul element
-    ul.insertAdjacentHTML("beforeend", li);
+// We keep the same approach as before, but note that now "dastgahMap" is an array of objects.
+//   radifMap[x] -> name of radif x
+//   dastgahMap[x] -> an object containing {y: "dastgahName", ...}
 
-    // Get audio duration
-    const audioTag = document.querySelector(`.music${i + 1}`);
-    const audioduration = document.querySelector(`#music${i + 1}`);
+let currentView = "radif"; 
+let currentRadif = null;      
+let currentSongList = [];
+let currentSongListIndex = 0;
 
-    // Update audio duration on load
-    audioTag.addEventListener("loadeddata", ()=>{
-        let audioDuration = audioTag.duration;
-        let totalMin = Math.floor(audioDuration / 60);
-        let totalSec = Math.floor(audioDuration % 60);
-        if(totalSec < 10){
-            totalSec = `0${totalSec}`;
-        }
-        audioduration.innerHTML = `${totalMin}:${totalSec}`;
-        audioduration.setAttribute("t-duration", `${totalMin}:${totalSec}`);
-    })
-}
+const bottomSheet = document.querySelector(".container .music-list-div");
+const backToRadif = document.getElementById("backToRadif");      // (You'd add these IDs in HTML)
+const backToDastgah = document.getElementById("backToDastgah");  // (You'd add these IDs in HTML)
+const prevSongBtn2 = document.getElementById("prevSongBtn");     // If you have separate next/prev in the sheet
+const nextSongBtn2 = document.getElementById("nextSongBtn");
+const sheetTitle = document.getElementById("sheetTitle");
+const sheetContent = document.getElementById("sheetContent");
 
-// Get all list items
-let allLiTag = document.querySelectorAll(".music-lists-container ul li");
+// In Dastgah view (step 2): back-to-radif goes to radif list.
+backToRadif.addEventListener("click", () => {
+    showRadifList();
+  });
 
-// Function to update all list items
-let playingNow =()=>{
-    // Loop through all list items
-    for(let i = 0; i < allmusic.length; i++){
-        let addura = allLiTag[i].querySelector(".music-list-total-time");
-        // Remove playing class if present
-        if(allLiTag[i].classList.contains("playing")){
-            allLiTag[i].classList.remove("playing");
-            let adDuration = addura.getAttribute("t-duration");
-            addura.innerHTML = adDuration;
-        }
-        // Add playing class if current music index matches
-        if(allLiTag[i].getAttribute("li-index") == musicIndex){
-            allLiTag[i].classList.add("playing");
-            addura.innerHTML = "Playing";
-        }
-        // Set onclick event for list item
-        allLiTag[i].setAttribute("onclick", "clicked(this)");
+// In Songs view (step 3): back-to-dastgah goes to dastgah list for currentRadif.
+backToDastgah.addEventListener("click", () => {
+    if(currentRadif !== null) {
+        showDastgahList(currentRadif);
     }
+});
+
+// Show the bottom sheet
+function musicListOpen(){
+    showRadifList();
+    bottomSheet.style.bottom = "0";
+}
+function musicListClose(){
+    bottomSheet.style.bottom = "-100%";
+}
+musicListOpenBtn.addEventListener("click", musicListOpen);
+musicListCloseBtn.addEventListener("click", musicListClose);
+
+function updateNavButtons(show){
+    if(!prevSongBtn2 || !nextSongBtn2) return;
+    prevSongBtn2.style.display = show ? "inline-block" : "none";
+    nextSongBtn2.style.display = show ? "inline-block" : "none";
 }
 
-// Function to handle list item click
-let clicked =(elem)=>{
-    // Get music index from list item
-    let getLiIndex = elem.getAttribute("li-index");
-    musicIndex = getLiIndex; //Update music index
-    loadMusic(musicIndex); //Load music data based on music index
-    wavesurfer.load(`Musics/music${musicIndex}.mp3`); //Load music file using wavesurfer
-    wavesurfer.setTime(0); //Reset waveform progress to 0(zero)
-    // Update play/pause icon if currently paused
-    if(playPauseBtn.classList.contains("pause")){
-        playPauseBtn.classList.replace("pause", "play");
-        playPauseBtn.innerHTML = '<i class="material-icons">play_arrow</i>';
-    }
-    // Play clicked music after 2-second delay
-    setTimeout(() =>{
-        if(playPauseBtn.classList.contains("play")){
-            playPauseBtn.classList.replace("play", "pause");
-            playPauseBtn.innerHTML = '<i class="material-icons">pause</i>';
-        }
-        wavesurfer.play();
-    }, 2000);
-    playingNow();
-    musicListClose();
+// Step 1: Radif List
+function showRadifList(){
+    currentView = "radif";
+    sheetTitle.textContent = "Select a Radif";
+    if(backToRadif) backToRadif.style.display = "none";
+    if(backToDastgah) backToDastgah.style.display = "none";
+    updateNavButtons(false);
+
+    let html = `<ul class="list">`;
+    Object.keys(radifMap).forEach(rKey => {
+        const radifName = radifMap[rKey];
+        // Check if this radif has any songs in allmusic
+        const hasSongs = allmusic.some(song => song.index[0] === parseInt(rKey, 10));
+        html += `
+            <li class="list-item" data-radif="${rKey}">
+                <span>${radifName}</span>
+                <span class="sub-text">${hasSongs ? ">" : "(No songs)"}</span>
+            </li>`;
+    });
+    html += `</ul>`;
+    sheetContent.innerHTML = html;
+
+    sheetContent.querySelectorAll(".list-item").forEach(item => {
+        item.addEventListener("click", ()=>{
+            const radifIndex = parseInt(item.getAttribute("data-radif"), 10);
+            if(allmusic.some(song => song.index[0] === radifIndex)){
+                currentRadif = radifIndex;
+                showDastgahList(radifIndex);
+            }
+        });
+    });
 }
+
+// Step 2: Dastgah List
+function showDastgahList(radifIndex){
+    currentView = "dastgah";
+    const rName = radifMap[radifIndex] || `Unknown(${radifIndex})`;
+    sheetTitle.innerHTML = `<span class="back-btn" id="backToRadif" style="display:none;">←</span> </span><i class="material-icons" id="music-list-btn">queue_music</i> ${rName} > Select a Dastgah`;
+    if(backToRadif) backToRadif.style.display = "inline-block";
+    if(backToDastgah) backToDastgah.style.display = "none";
+    updateNavButtons(false);
+
+    // We use dastgahMap[ radifIndex ], which is an object: e.g. { "0": "BayateTork", "1": "Dashti", "2": "Shur" }
+    const possibleDastgahs = dastgahMap[radifIndex]; 
+    // Filter songs to see which dastgah indices actually exist
+    const filtered = allmusic.filter(song => song.index[0] === radifIndex);
+    const uniqueDastgahs = [...new Set(filtered.map(song => song.index[1]))];
+
+    let html = `<ul class="list">`;
+    uniqueDastgahs.forEach(d => {
+        const dName = possibleDastgahs[d] || `Unknown(${d})`;
+        html += `
+            <li class="list-item" data-dastgah="${d}">
+                <span>${dName}</span>
+                <span class="sub-text">></span>
+            </li>
+        `;
+    });
+    html += `</ul>`;
+    sheetContent.innerHTML = html;
+
+    sheetContent.querySelectorAll(".list-item").forEach(item => {
+        item.addEventListener("click", ()=>{
+            const dIndex = parseInt(item.getAttribute("data-dastgah"), 10);
+            showSongsList(radifIndex, dIndex);
+        });
+    });
+}
+
+// Step 3: Songs in (radifIndex, dastgahIndex)
+function showSongsList(radifIndex, dastgahIndex){
+    currentView = "songs";
+    currentSongList = allmusic.filter(song => (
+        song.index[0] === radifIndex && song.index[1] === dastgahIndex
+    ));
+    currentSongListIndex = 0;
+
+    if(backToRadif) backToRadif.style.display = "none";
+    if(backToDastgah) backToDastgah.style.display = "inline-block";
+    updateNavButtons(true);
+
+    const rName = radifMap[radifIndex] || `Unknown(${radifIndex})`;
+    const dName = dastgahMap[radifIndex][dastgahIndex] || `Unknown(${dastgahIndex})`;
+    sheetTitle.textContent = `Songs in ${rName} > ${dName}`;
+    updateSongListUI();
+}
+
+// Build the songs UI
+function updateSongListUI(){
+    let html = `<ul class="music-list">`;
+    currentSongList.forEach((song, idx) => {
+        const isPlaying = (idx === currentSongListIndex);
+        const displayDuration = isPlaying ? "Playing" : (song.duration || "0:00");
+        html += `
+            <li class="list-item" data-index="${idx}">
+                <div>
+                    <strong>${song.name}</strong><br/>
+                    <span class="sub-text">${song.artist}</span>
+                </div>
+                <span class="sub-text">${displayDuration}</span>
+            </li>
+        `;
+    });
+    html += `</ul>`;
+    sheetContent.innerHTML = html;
+
+    sheetContent.querySelectorAll(".list-item").forEach(item => {
+        item.addEventListener("click", ()=>{
+            const idx = parseInt(item.getAttribute("data-index"), 10);
+            currentSongListIndex = idx;
+            loadAndPlaySongFromList();
+            updateSongListUI();
+        });
+    });
+}
+
+// Next/Prev within the currentSongList
+function nextSong(){
+    if(currentSongList.length === 0) return;
+    currentSongListIndex = (currentSongListIndex + 1) % currentSongList.length;
+    loadAndPlaySongFromList();
+    updateSongListUI();
+}
+
+function prevSong(){
+    if(currentSongList.length === 0) return;
+    currentSongListIndex = (currentSongListIndex - 1 + currentSongList.length) % currentSongList.length;
+    loadAndPlaySongFromList();
+    updateSongListUI();
+}
+
+// Load/Play from currentSongList
+function loadAndPlaySongFromList(){
+    const song = currentSongList[currentSongListIndex];
+    // Find the 1-based index in allmusic
+    musicIndex = allmusic.findIndex(s => s.src === song.src) + 1;
+    loadMusic(musicIndex);
+    wavesurfer.load(song.src);
+    wavesurfer.setTime(0);
+    wavesurfer.once("ready", ()=> wavesurfer.play());
+}
+
+// If you have separate next/prev buttons for the bottom sheet:
+if (prevSongBtn2) prevSongBtn2.addEventListener("click", prevSong);
+if (nextSongBtn2) nextSongBtn2.addEventListener("click", nextSong);
 
 // FOR EFFECTS LIST
 function myFunction() {
@@ -539,7 +623,7 @@ function myFunction() {
       }
     }
   }
-
+  
 // REGIONS SETTINGS 
 const icon = document.getElementById('region-icon');
 const dropdown = document.getElementById('regions-dropdown');
@@ -551,69 +635,6 @@ icon.addEventListener('click', () => {
 
 // Attach event listener to volume input range
 volumeProgressBar.addEventListener("input", updateSliderTrack);
-// Attach event listeners to buttons
-// volumeIncreBtn.addEventListener("click", volumeIncrease);
-// volumeDecreBtn.addEventListener("click", volumeDecrease);
-// volumeIcon.addEventListener("click", muteMusic);
 musicListOpenBtn.addEventListener("click", musicListOpen);
 musicListCloseBtn.addEventListener("click", musicListClose);
 updateSliderTrack();
-
-
-
-/*
-***************** DETECT GESTURE ********************
-*/
-myElement.addEventListener("touchstart", startTouch, false);
-myElement.addEventListener("touchmove", moveTouch, false);
- 
-// Swipe Up / Down / Left / Right
-var initialX = null;
-var initialY = null;
- 
-function startTouch(e) {
-  initialX = e.touches[0].clientX;
-  initialY = e.touches[0].clientY;
-};
- 
-function moveTouch(e) {
-  if (initialX === null) {
-    return;
-  }
- 
-  if (initialY === null) {
-    return;
-  }
- 
-  var currentX = e.touches[0].clientX;
-  var currentY = e.touches[0].clientY;
- 
-  var diffX = initialX - currentX;
-  var diffY = initialY - currentY;
- 
-  if (Math.abs(diffX) > Math.abs(diffY)) {
-    // sliding horizontally
-    if (diffX > 0) {
-      // swiped left
-      console.log("swiped left");
-    } else {
-      // swiped right
-      console.log("swiped right");
-    }  
-  } else {
-    // sliding vertically
-    if (diffY > 0) {
-      // swiped up
-      console.log("swiped up");
-    } else {
-      // swiped down
-      console.log("swiped down");
-    }  
-  }
- 
-  initialX = null;
-  initialY = null;
-   
-  e.preventDefault();
-};
-

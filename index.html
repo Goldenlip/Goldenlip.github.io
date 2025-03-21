@@ -35,7 +35,7 @@
             <label for="volume_input" style="margin-left: 35px;"><b>Volume: </label><output id="volume_value"></output> dB</b>
             
             
-            <input id="speed_input" type="range" class="effects-slider" min="0.25" max="3" step="0.25" value="1.00">
+            <input id="speed_input" type="range" class="effects-slider" min="0.5" max="2" step="0.1" value="1.00">
             <label for="speed_input" style="margin-left: 35px;"><b>Speed: </label><output id="speed_value"></output>x</b>
 
             <input id="pitch_input" type="range" class="effects-slider" min="0.65" max="1.35" step="0.05" value="1.00">
@@ -88,14 +88,12 @@
         <i class="material-icons" id="region-icon">data_array</i>
     </div>
     
-    <div class="now-playing btns" id="music_list">
-        <i class="material-icons" id="music-list-btn">queue_music</i>
-    </div>
+    
 
     
-    <div class="now-playing btns" id="save">
+    <!-- <div class="now-playing btns" id="save">
         <i class="material-icons" id="save-btn">save</i>
-    </div>
+    </div> -->
 
     <div class="music-info">
         <div class="guesheh-title">
@@ -121,16 +119,37 @@
             <i class="material-icons" id="save-btn">save</i>
         </div> -->
     </div>
-
-    <div class="music-list-div">
-        <i class="material-icons" id="music-list-close-btn">close</i>
-        <span class="music-list-title"><i class="material-icons">queue_music</i> Radif Library</span>
-        <div class="music-lists-container">
-            <ul>
-                
-            </ul>
-        </div>
+    <div class="now-playing btns" id="music_list">
+        <i class="material-icons" id="music-list-btn">queue_music</i>
     </div>
+    <div class="music-list-div">
+        <!-- Existing close icon -->
+      
+        <!-- Add these for the multi-step logic: -->
+        <div class="sheet-header">
+          <!-- “Back” buttons (optional, if your code uses them) -->
+        <span>
+        <span class="back-btn" id="backToRadif" style="display:none;">←</span>
+        <span class="back-btn" id="backToDastgah" style="display:none;">←</span> 
+            <i class="material-icons" id="music-list-close-btn">close</i>
+        </span>
+          <!-- Title that your JS sets via `sheetTitle.textContent = "..."` -->
+          <span class="music-list-title" id="sheetTitle">
+            <i class="material-icons">queue_music</i> 
+            Radif Library
+          </span>
+      
+          <!-- Next/prev navigation buttons (optional, if your code references them) -->
+          <span class="nav-btn" id="prevSongBtn" style="display:none;">←</span>
+          <span class="nav-btn" id="nextSongBtn" style="display:none;">→</span>
+        </div>
+      
+        <!-- This is where we’ll inject radif/dastgah/song lists in your JS code: -->
+        <div class="music-lists-container" id="sheetContent">
+          <!-- Initially empty. Your JS will fill it with <ul> or <p> content. -->
+            
+        </div>
+      </div>
 
     
  </div>
@@ -143,7 +162,7 @@
 <script src="https://unpkg.com/wavesurfer.js@7/dist/plugins/timeline.min.js"></script>
 
 <!-- Data file -->
-<script src="Data.js"></script>
+<script src="music_data.js"></script>
 <!-- Script file -->
 <script src="MusicPlayer.js"></script>
 <script src="javascript_files/effects.js"></script>

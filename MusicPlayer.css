@@ -337,7 +337,7 @@ height:45px;
 .container .music-list-div{
  height:330px;
  width:100%;
- background:#f5f8ff;
+ background:#d9d9d9;
  backdrop-filter:blur(22px);
  position:absolute;
  bottom:-100%;
@@ -589,3 +589,149 @@ Regions Dropdown List
    cursor: pointer;
    margin-left: 20px;
  }
+
+/* ===========================
+   BOTTOM SHEET STYLING
+   =========================== */
+   .music-list-div {
+    position: fixed;
+    left: 0; 
+    right: 0;
+    bottom: -100%; /* off-screen by default */
+    background:#d9d9d9;
+    color: #000;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+    transition: bottom 0.3s ease-in-out;
+    z-index: 999;
+    max-height: 30vh; /* so it doesn't fill entire screen */
+    overflow-y: auto;
+  }
+  
+  /* When you add a class like .open or .active, slide it up */
+  .music-list-div.open {
+    bottom: 0;
+  }
+  
+  /* The close “X” button in top-right corner */
+  .music-list-div #music-list-close-btn {
+    position: relative;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.4rem;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  /* Optional: a header area or “title bar” at the top of the sheet */
+  .music-list-title {
+    display: block;
+    padding: 1rem 3rem 1rem 1rem; /* extra space on right for close icon */
+    font-size: 1rem;
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+    margin: 0;
+  }
+  
+  /* Container for the content or list inside the sheet */
+  .music-lists-container {
+    padding: 0.5rem 1rem 1rem;
+  }
+  
+  /* Song/radif/dastgah lists inside the sheet */
+  .music-lists-container ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    
+  }
+  
+  .music-lists-container li {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    margin: 0.2rem 0;
+    border-radius: 6px;
+    cursor: pointer;
+    background:#d9d9d9;   
+  }
+  
+  .music-lists-container li + li {
+    margin-top: 0.5rem;
+    
+  }
+  
+  /* Hover effect */
+  .music-lists-container li:hover {
+ background:#d9d9d9;
+  }
+  
+  /* If you want a “title + subtext” look for each list item */
+  .music-lists-container .song-name {
+    font-weight: bold;
+    color: #222;
+    margin-bottom: 0.2rem;
+  }
+  .music-lists-container .song-artist {
+    font-size: 0.85rem;
+    color: #666;
+  }
+  .music-lists-container .song-duration {
+    font-size: 0.85rem;
+    color: #999;
+  }
+  
+  /* Example “close” icon styling if you want a subtle hover effect */
+  #music-list-close-btn:hover {
+    color: #666;
+  }
+   
+/* ========== Radif List Styles ========== */
+ul.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: 'Roboto', sans-serif; /* Change to your desired font if needed */
+  background:#d9d9d9;
+}
+
+li.list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background:#d9d9d9;
+  /* White background for each item */
+ 
+  font-size: 16px;
+  color: #333333;      
+  font-weight: bold;             /* Dark text for legibility */
+  transition: background-color 0.2s ease;
+}
+
+li.list-item:last-child {
+  border-bottom: none;
+}
+
+li.list-item:hover {
+  background-color: #f7f7f7;          /* Slightly off-white on hover */
+}
+
+li.list-item .sub-text {
+  font-size: 14px;
+  background:#d9d9d9;
+  /* Lighter gray for the arrow/text */
+}
+
+/* Selected item styling (if used) */
+li.list-item.selected {
+  background-color: #000000;        /* Black background */
+  color: #ffffff;                   /* White text */
+}
+
+li.list-item.selected .sub-text {
+  color: #dddddd;                   /* Light gray for sub-text on selected */
+}
