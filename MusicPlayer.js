@@ -232,23 +232,58 @@ wavesurfer.on("ready", async ()=>{
 
 
   // Speed slider
-  document.getElementById('speed_input').addEventListener('input', (e) => {
-      speed = e.target.valueAsNumber;
-      wavesurfer.setPlaybackRate(speed);
-      updatePitch();
-  });
-
-  // Pitch slider
-  document.getElementById('pitch_input').addEventListener('input', (t) => {
-      pitch = t.target.valueAsNumber;
-      updatePitch();
-  });
-
-  // Tune slider
-  document.getElementById('tune_input').addEventListener('input', (t) => {
-    tune = t.target.valueAsNumber;
+//   document.getElementById('speed_input').addEventListener('input', (e) => {
+//       speed = e.target.valueAsNumber;
+//       wavesurfer.setPlaybackRate(speed);
+//       updatePitch();
+//   });
+const speedSlider = document.getElementById('speed_input');
+const speedValueBox = document.getElementById('speedValueBox');
+speedSlider.addEventListener('input', (e) => {
+  speedValueBox.value = speedSlider.value;  
+  speed = e.target.valueAsNumber;
+    wavesurfer.setPlaybackRate(speed);
     updatePitch();
-  });
+});
+speedValueBox.addEventListener('input', function(){
+  const value = Math.min(Math.max(speedValueBox.value, 0.5), 2);
+  speedSlider.value=value;
+});
+
+// Pitch slider
+const pitchSlider = document.getElementById('pitch_input');
+const pitchValueBox = document.getElementById('pitchValueBox');
+pitchSlider.addEventListener('input', (t) => {
+  pitchValueBox.value = pitchSlider.value;  
+  parseFloat(pitchSlider.value).toFixed(2).replace(/(\.\d*?)0+$/, "$1");
+  pitch = t.target.valueAsNumber;
+    updatePitch();
+});
+pitchValueBox.addEventListener('input', function(){
+  const value = Math.min(Math.max(pitchValueBox.value, 0.65), 1.35);
+  pitchSlider.value=value;
+});
+
+
+
+//   // Pitch slider
+//   document.getElementById('pitch_input').addEventListener('input', (t) => {
+//       pitch = t.target.valueAsNumber;
+//       updatePitch();
+//   });
+
+//   // Tune slider
+//   document.getElementById('tune_input').addEventListener('input', (t) => {
+//     tune = t.target.valueAsNumber;
+//     updatePitch();
+//   });
+// Tune slider -- currently doesn't affect the actual effect but
+const tuneSlider = document.getElementById('tune_input');
+const tuneValueBox = document.getElementById('tuneValueBox');
+tuneSlider.addEventListener('input', (e) => {
+  tuneValueBox.value = tuneSlider.value;
+  tune = e.target.valueAsNumber;
+})
 
   // Function to update pitch considering speed
   function updatePitch() {
@@ -496,7 +531,10 @@ function showRadifList(){
 function showDastgahList(radifIndex){
     currentView = "dastgah";
     const rName = radifMap[radifIndex] || `Unknown(${radifIndex})`;
-    sheetTitle.innerHTML = `<span class="back-btn" id="backToRadif" style="display:none;">←</span> </span><i class="material-icons" id="music-list-btn">queue_music</i> ${rName} > Select a Dastgah`;
+    sheetTitle.innerHTML = `<span class="back-btn" id="backToRadif" style="display:none;">←</span> 
+    <i class="material-icons" id="music-list-btn">queue_music</i> 
+    ${rName} > Select a Dastgah
+    `;
     if(backToRadif) backToRadif.style.display = "inline-block";
     if(backToDastgah) backToDastgah.style.display = "none";
     updateNavButtons(false);

@@ -22,30 +22,66 @@
         <button onclick="myFunction()" class="effects-btn" id="effects-list-btn">
             <b>Effects </b><i id="caret" class="material-icons">expand_more</i></button>
         <div id="effects-Dropdown" class="effects">
-            <div class="volume-box">
-                <!-- <i class="material-icons volume-icon">volume_up</i> -->
-                <!-- <button class="volume-decre volume-btn">
-                    <i class="material-icons">remove</i>
-                </button> -->
-                <input id="volume_input" type="range" class="effects-slider" min="0" max="1" step="0.1" value="1.00">
-                <!-- <button class="volume-incre volume-btn">
-                    <i class="material-icons">add</i>
-                </button> -->
+            <div class="effect-block">
+                <!-- <div class="bounds">
+                    <p class="boundary-min" id="vol-min">0.00</p>
+                    <p class="boundary-max" id="vol-max">1.00</p>
+                </div> -->
+                <div class="volume-box">
+                    <!-- <i class="material-icons volume-icon">volume_up</i> -->
+                    <!-- <button class="volume-decre volume-btn">
+                        <i class="material-icons">remove</i>
+                    </button> -->
+                    <input id="volume_input" type="range" class="effects-slider" min="0" max="1" step="0.1" value="1.00">
+                    <!-- <button class="volume-incre volume-btn">
+                        <i class="material-icons">add</i>
+                    </button> -->
+                </div>
+                <label class="effect-label" for="volume_input" style="margin-left: 36px;"><b>Volume:  </label><output id="volume_value"></output></b>
             </div>
-            <label for="volume_input" style="margin-left: 35px;"><b>Volume: </label><output id="volume_value"></output> dB</b>
             
-            
-            <input id="speed_input" type="range" class="effects-slider" min="0.5" max="2" step="0.1" value="1.00">
-            <label for="speed_input" style="margin-left: 35px;"><b>Speed: </label><output id="speed_value"></output>x</b>
+            <div class="effect-block">
+                <!-- <div class="bounds">
+                    <p class="boundary-min" id="speed-min">0.25</p>
+                    <p class="boundary-max" id="speed-max">3.00</p>
+                </div> -->
+                <input id="speed_input" type="range" class="effects-slider" min="0.5" max="2" step="0.1" value="1.00">
+                <label class="effect-label" for="speed_input" style="margin-left: 35px;"><b>Speed:  </label>
+                    <!--<output id="speed_value"></output>x</b> -->
+                <input type="number" id="speedValueBox" min="0.5" max="2.00" value="1.00">
+            </div>
 
-            <input id="pitch_input" type="range" class="effects-slider" min="0.65" max="1.35" step="0.05" value="1.00">
-            <label for="pitch_input" style="margin-left: 35px;"><b>Pitch: </label><output id="pitch_value"></output> semitones</b>
+            <div class="effect-block">
+                <!-- <div class="bounds">
+                    <p class="boundary-min" id="pitch-min">-0.35</p>
+                    <p class="boundary-max" id="pitch-max">0.35</p>
+                </div> -->
+                <input id="pitch_input" type="range" class="effects-slider" min="0.65" max="1.35" step="0.05" value="1.00">
+                <label class="effect-label" for="pitch_input" style="margin-left: 36px;"><b>Pitch:  </label>
+                    <!--<output id="pitch_value"></output> semitones</b>-->
+                <input type="number" id="pitchValueBox" min="0.65" max="1.35" value="1.00">
+            </div>
             
-            <input id="tune_input" type="range" class="effects-slider" min="-50" max="50" step="1" value="0.00">
-            <label for="tune_input" style="margin-left: 35px;"><b>Tune: </label><output id="tune_value"></output> cent</b>
+            <div class="effect-block">
+                <!-- <div class="bounds">
+                    <p class="boundary-min" id="tune-min">-50</p>
+                    <p class="boundary-max" id="tune-max">+50</p>
+                </div> -->
+                <input id="tune_input" type="range" class="effects-slider" min="-50" max="50" step="1" value="0.00">
+                <label class="effect-label" for="tune_input" style="margin-left: 35px;"><b>Tune:  </label>
+                    <!--<output id="tune_value"></output> cent</b>-->
+                <input type="number" id="tuneValueBox" min="-50" max="50" value="0.00">
+            </div>
 
-            <input id="pan_input" type="range" class="effects-slider" min="-30" max="30" step="1" value="0 L/R">
-            <label for="pan_input" style="margin-left: 35px;"><b>Panning: </label><output id="pan_value"></output></b>
+            <div class="effect-block" id="pan-block">
+                <!-- <div class="bounds">
+                    <p class="boundary-min" id="pan-min">Left</p>
+                    <p class="boundary-max" id="pan-max">Right</p>
+                </div> -->
+                <input id="pan_input" type="range" class="effects-slider" min="-30" max="30" step="1" value="0 L/R">
+                <label class="effect-label" for="pan_input" style="margin-left: 35px;"><b>Panning:  </label><output id="pan_value"></output></b>
+            </div>
+
         </div>
     </div>
 
@@ -97,14 +133,8 @@
 
     <div class="music-info">
         <div class="guesheh-title">
-            
         </div>
         <h5 class="music-name"></h5>
-        <!-- <h5 class="artist-name"></h5> -->
-        <!-- <div class="guesheh-info">
-            <p class="ginfo-element">Primary</p>
-            <p class="ginfo-element">(Key)</p>
-        </div> -->
         <div class="artist-info">
             <!-- <p class="artist-name music-name"></p> -->
             <!-- <p class="artist-element">(Instrument)</p> -->
@@ -128,11 +158,9 @@
         <!-- Add these for the multi-step logic: -->
         <div class="sheet-header">
           <!-- “Back” buttons (optional, if your code uses them) -->
-        <span>
         <span class="back-btn" id="backToRadif" style="display:none;">←</span>
         <span class="back-btn" id="backToDastgah" style="display:none;">←</span> 
             <i class="material-icons" id="music-list-close-btn">close</i>
-        </span>
           <!-- Title that your JS sets via `sheetTitle.textContent = "..."` -->
           <span class="music-list-title" id="sheetTitle">
             <i class="material-icons">queue_music</i> 
